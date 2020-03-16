@@ -40,7 +40,7 @@ function _format_corona_data(infections_data, deaths_data, cured_data) {
 		let pattern = /(?<month>[0-9]{1,2})\/(?<day>[0-9]{1,2})\/(?<year>[0-9]{2})$/;
 		let match = date.match(pattern);
 		let { year, month, day } = match.groups;
-		[year, month, day] = [parseInt(year), parseInt(month), parseInt(day)];
+		[year, month, day] = [parseInt(year), parseInt(month - 1), parseInt(day)];
 
 		date = new Date(`20${year}`, month, day);
 
