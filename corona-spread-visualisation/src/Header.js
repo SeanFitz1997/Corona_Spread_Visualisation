@@ -27,7 +27,7 @@ function Header(props) {
 			<div
 				className="modal fade"
 				id="info-modal"
-				tabindex="-1"
+				tabIndex="-1"
 				role="dialog"
 				aria-labelledby="info-modalLabel"
 				aria-hidden="true"
@@ -52,26 +52,26 @@ function Header(props) {
 								This interactive map lets you track reported
 								cases of the coronavirus around the world.
 							</p>
-							<p>
+							<div>
 								This application allows you to:
 								<ul>
-									<li>
+									<li key={0}>
 										View the spread at a set date by
 										selecting a point on the slider.
 									</li>
-									<li>
+									<li key={1}>
 										Watch the spread of coronavirus over
 										time.
 									</li>
-									<li>
+									<li key={2}>
 										Zoom into a specific area on the map.
 									</li>
-									<li>
+									<li key={3}>
 										View the deaths and cured data by
 										selecting their counter.
 									</li>
 								</ul>
-							</p>
+							</div>
 							<p>
 								Information on reported infection, deaths and
 								cured patients are based to the data published
@@ -89,7 +89,7 @@ function Header(props) {
 								The source code for this application can be
 								accessed on my github. {/* TODO add link */}
 								<a href="#" className="float-right">
-									<i class="fab fa-github-square fa-2x"></i>
+									<i className="fab fa-github-square fa-2x"></i>
 								</a>
 							</p>
 

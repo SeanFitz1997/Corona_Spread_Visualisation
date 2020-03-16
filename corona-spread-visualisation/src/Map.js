@@ -2,6 +2,7 @@ import React from "react";
 import { Map, TileLayer } from "react-leaflet";
 import HeatmapLayer from "react-leaflet-heatmap-layer";
 import CountUp from "react-countup";
+import { isMobile } from "react-device-detect";
 
 import get_corona_data from "./data";
 
@@ -29,7 +30,6 @@ class WorldMap extends React.Component {
 			// Update slider
 			let slider = document.getElementById("date-slider");
 			slider.max = date_index;
-			slider.defaultValue = date_index;
 			slider.value = date_index;
 		});
 	}
@@ -152,21 +152,21 @@ class WorldMap extends React.Component {
 	}
 
 	render_play_button() {
-		let { playing, plot_type } = this.state;
+		let { playing } = this.state;
 		return (
 			<button
 				onClick={this.play_button_handler.bind(this)}
 				type="button"
-				class="play-button"
+				className="play-button"
 			>
 				{!playing ? (
 					<>
 						Watch Over Time
-						<i class="ml-2 fas fa-play play-icon"></i>
+						<i className="ml-2 fas fa-play play-icon"></i>
 					</>
 				) : (
 					<>
-						Stop <i class="ml-2 fas fa-stop"></i>
+						Stop <i className="ml-2 fas fa-stop"></i>
 					</>
 				)}
 			</button>
@@ -184,7 +184,6 @@ class WorldMap extends React.Component {
 					min="0"
 					max="0"
 					step="1"
-					defaultValue="0"
 					value={date_index}
 					onInput={this.on_date_change.bind(this)}
 					disabled={playing}
@@ -241,18 +240,20 @@ class WorldMap extends React.Component {
 	}
 
 	render() {
-		const { corona_data, date_index, plot_type, playing } = this.state;
+		let map_config = {
+			center: [10, 0],
+			zoom: isMobile? 0.75: 2,
+			mixZoom: isMobile? 0.75: 2,
+			maxBounds: [[-100, -200], [100, 200]]
+		}
 		return (
 			<div className="map">
 				<Map
-					center={[10, 0]}
-					zoom={2}
+					center={map_config.center}
+					zoom={map_config.zoom}
 					attributionControl={false}
-					minZoom={2}
-					maxBounds={[
-						[-100, -200],
-						[100, 200]
-					]}
+					minZoom={map_config.minZoom}
+					maxBounds={map_config.maxBounds}
 				>
 					{this.render_heat_map()}
 					<TileLayer
