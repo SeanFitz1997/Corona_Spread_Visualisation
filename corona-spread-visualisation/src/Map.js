@@ -243,7 +243,7 @@ class WorldMap extends React.Component {
 		let map_config = {
 			center: [10, 0],
 			zoom: isMobile? 0.75: 2,
-			mixZoom: isMobile? 0.75: 2,
+			minZoom: isMobile? 0.75: 2,
 			maxBounds: [[-100, -200], [100, 200]]
 		}
 		return (
@@ -251,8 +251,8 @@ class WorldMap extends React.Component {
 				<Map
 					center={map_config.center}
 					zoom={map_config.zoom}
-					attributionControl={false}
 					minZoom={map_config.minZoom}
+					attributionControl={false}
 					maxBounds={map_config.maxBounds}
 				>
 					{this.render_heat_map()}
