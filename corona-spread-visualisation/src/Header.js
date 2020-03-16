@@ -10,7 +10,7 @@ function Header(props) {
 					<div className="col-2"></div>
 					<div className="col">
 						<h3 className="display-4 title">Corona Count</h3>
-						<p className="lead-lg">
+						<p className="lead-lg sub-title">
 							Track the global spread of Coronavirus (COVID-19)
 						</p>
 					</div>
