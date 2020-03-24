@@ -25,11 +25,7 @@ async function get_corona_data() {
 	let deaths_data = Papa.parse(deaths_content, { header: true }).data;
 	let cured_data = Papa.parse(cured_content, { header: true }).data;
 
-	let corona_data = _format_corona_data(
-		infections_data,
-		deaths_data,
-		cured_data
-	);
+	let corona_data = _format_corona_data(infections_data, deaths_data, cured_data);
 
 	return corona_data;
 }
@@ -44,11 +40,7 @@ function _format_corona_data(infections_data, deaths_data, cured_data) {
 		let pattern = /(?<month>[0-9]{1,2})\/(?<day>[0-9]{1,2})\/(?<year>[0-9]{2})$/;
 		let match = date.match(pattern);
 		let { year, month, day } = match.groups;
-		[year, month, day] = [
-			parseInt(year),
-			parseInt(month - 1),
-			parseInt(day)
-		];
+		[year, month, day] = [parseInt(year), parseInt(month - 1), parseInt(day)];
 
 		date = new Date(`20${year}`, month, day);
 
@@ -70,32 +62,17 @@ function _format_corona_data(infections_data, deaths_data, cured_data) {
 		// Add values into each entry
 		Object.keys(row)
 			.slice(4)
-			.forEach((date, date_index) => {
-				// Get Counts
-				let counts = {
-					infected: parseInt(row[date]),
-					deaths: parseInt(deaths_data[row_index][date]),
-					cured: parseInt(cured_data[row_index][date])
-				};
-
-				// Validate counts
-				if (
-					!Object.keys(counts).every(count_type =>
-						Number.isSafeInteger(counts[count_type])
-					)
-				)
-					console.error(
-						`Invalid counts data for ${title.state}-${
-							title.country
-						}: ${JSON.stringify(counts)}`
-					);
-				else
-					corona_data[date_index].data.push({
-						title: title,
-						location: location,
-						counts: counts
-					});
-			});
+			.forEach((date, date_index) =>
+				corona_data[date_index].data.push({
+					title: title,
+					location: location,
+					counts: {
+						infected: parseInt(row[date]),
+						deaths: parseInt(deaths_data[row_index][date]),
+						cured: parseInt(cured_data[row_index][date])
+					}
+				})
+			);
 	});
 
 	return corona_data;
