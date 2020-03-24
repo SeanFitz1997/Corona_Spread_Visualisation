@@ -76,11 +76,14 @@ function Header(props) {
 								Information on reported infection, deaths and
 								cured patients are based to the data published
 								by{" "}
-								<a href="https://coronavirus.jhu.edu/">
+								<a
+									href="https://coronavirus.jhu.edu/"
+									target="_blank"
+								>
 									Johns Hopkins University
 								</a>{" "}
 								which can be accessed{" "}
-								<a href="https://github.com/datasets/covid-19">
+								<a href="https://github.com/datasets/covid-19" target="_blank">
 									here
 								</a>
 								.
@@ -89,7 +92,7 @@ function Header(props) {
 								The source code for this application can be
 								accessed on my github.
 								<a
-									href="https://github.com/SeanFitz1997/Corona_Spread_Visualisation"
+									href="https://github.com/SeanFitz1997/Corona_Spread_Visualisation" target="_blank"
 									className="float-right"
 								>
 									<i className="fab fa-github-square fa-2x"></i>
