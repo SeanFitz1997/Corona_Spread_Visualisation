@@ -87,11 +87,8 @@ function Header(props) {
 							</p>
 							<p>
 								The source code for this application can be
-								accessed on my github.
-								<a
-									href="https://github.com/SeanFitz1997/Corona_Spread_Visualisation"
-									className="float-right"
-								>
+								accessed on my github. {/* TODO add link */}
+								<a href="#" className="float-right">
 									<i className="fab fa-github-square fa-2x"></i>
 								</a>
 							</p>
