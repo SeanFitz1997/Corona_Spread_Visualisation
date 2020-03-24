@@ -242,10 +242,13 @@ class WorldMap extends React.Component {
 	render() {
 		let map_config = {
 			center: [10, 0],
-			zoom: isMobile? 0.75: 2,
-			minZoom: isMobile? 0.75: 2,
-			maxBounds: [[-100, -200], [100, 200]]
-		}
+			zoom: isMobile ? 0.75 : 2,
+			minZoom: isMobile ? 0.75 : 2,
+			maxBounds: [
+				[-100, -200],
+				[100, 200]
+			]
+		};
 		return (
 			<div className="map">
 				<Map

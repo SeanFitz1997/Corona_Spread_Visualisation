@@ -6,7 +6,6 @@ input[type="button"]:focus {
 body {
 	height: 100%;
 	background-image: radial-gradient(#090909 30%, #262626 70%);
-	overflow: hidden;
 }
 
 /* VARIABLES */
@@ -45,6 +44,7 @@ body {
 .leaflet-container {
 	width: 100%;
 	height: 100%;
+	background-color: transparent;
 }
 .slider {
 	-webkit-appearance: none;
