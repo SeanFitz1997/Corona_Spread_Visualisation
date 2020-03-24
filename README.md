@@ -5,7 +5,7 @@
 React app to visualize the spread of Coronavirus
 
 ## View the spread of Coronavirus (As of 23rd of March 2020)
-![Coronavirus spread heat map](./spread_demo.gif)
+![Coronavirus spread heat map](./spread.jpg)
 
 ## View Infections, Cured and Deaths for a specific area and date
-![Coronavirus spread demo](./interaction_demo.gif)
+![Coronavirus spread demo](./interaction.jpg)
