@@ -4,7 +4,7 @@ import HeatmapLayer from "react-leaflet-heatmap-layer";
 import CountUp from "react-countup";
 import { isMobile } from "react-device-detect";
 
-import get_corona_data from "./data";
+import CoronaData from "../Services/CoronaData";
 
 class WorldMap extends React.Component {
 	//*** STATE SETUP FUNCTIONS ***/
@@ -22,9 +22,10 @@ class WorldMap extends React.Component {
 
 	componentDidMount() {
 		//Retrieve corona data
-		get_corona_data().then(corona_data => {
+		CoronaData.build().then(corona_data => {
+			console.log("Running", corona_data);
 			// Update state
-			let date_index = corona_data.length - 1;
+			let date_index = corona_data.get_size() - 1;
 			this.setState({ corona_data, date_index });
 
 			// Update slider
@@ -37,22 +38,13 @@ class WorldMap extends React.Component {
 	//*** UTILS ***/
 
 	get_totals(date_index, corona_data) {
-		const default_value = {
-			infected: 0,
-			deaths: 0,
-			cured: 0
-		};
-		if (!date_index || !corona_data) return default_value;
-
-		let data = corona_data[date_index].data;
-		let totals = data.reduce((acc, x) => {
-			acc.infected += x.counts.infected;
-			acc.deaths += x.counts.deaths;
-			acc.cured += x.counts.cured;
-			return acc;
-		}, default_value);
-
-		return totals;
+		if (corona_data) return corona_data.get_totals(date_index);
+		else
+			return {
+				infected: 0,
+				deaths: 0,
+				cured: 0
+			};
 	}
 
 	get_date_string(date_time_string) {
@@ -101,7 +93,7 @@ class WorldMap extends React.Component {
 		this.interval = setInterval(() => {
 			let { date_index, corona_data } = this.state;
 			// Increment date or stop play at end
-			if (date_index < corona_data.length - 1)
+			if (date_index < corona_data.get_size() - 1)
 				this.setState({ date_index: ++date_index });
 			else this.stop_play();
 		}, 1000);
@@ -141,10 +133,10 @@ class WorldMap extends React.Component {
 		if (corona_data)
 			return (
 				<HeatmapLayer
-					points={corona_data[date_index].data}
+					points={corona_data.get_data(date_index, plot_type).data}
 					longitudeExtractor={point => point.location.longitude}
 					latitudeExtractor={point => point.location.latitude}
-					intensityExtractor={point => point.counts[plot_type]}
+					intensityExtractor={point => point.count}
 					gradient={gradients[plot_type]}
 				/>
 			);
@@ -185,7 +177,7 @@ class WorldMap extends React.Component {
 					max="0"
 					step="1"
 					value={date_index}
-					onInput={this.on_date_change.bind(this)}
+					onChange={this.on_date_change.bind(this)}
 					disabled={playing}
 				/>
 			</div>
@@ -193,17 +185,19 @@ class WorldMap extends React.Component {
 	}
 
 	render_date() {
-		let { corona_data, date_index } = this.state;
+		let { corona_data, date_index, plot_type } = this.state;
 		return (
 			<p className="lead mt-1 text-center">
 				{corona_data
-					? this.get_date_string(corona_data[date_index].date)
+					? this.get_date_string(
+							corona_data.get_data(date_index, plot_type).date
+					  )
 					: null}
 			</p>
 		);
 	}
 
-	render_count(count_type) {
+	render_count(count_type, i) {
 		let { plot_type, date_index, corona_data } = this.state;
 		const icons_class = {
 			deaths: "fas fa-skull-crossbones",
@@ -213,6 +207,7 @@ class WorldMap extends React.Component {
 
 		return (
 			<div
+				key={i}
 				id={`${count_type}-count`}
 				className={`col count${
 					plot_type === count_type ? " count_active" : ""
@@ -242,10 +237,13 @@ class WorldMap extends React.Component {
 	render() {
 		let map_config = {
 			center: [10, 0],
-			zoom: isMobile? 0.75: 2,
-			minZoom: isMobile? 0.75: 2,
-			maxBounds: [[-100, -200], [100, 200]]
-		}
+			zoom: isMobile ? 0.75 : 2,
+			minZoom: isMobile ? 0.75 : 2,
+			maxBounds: [
+				[-100, -200],
+				[100, 200]
+			]
+		};
 		return (
 			<div className="map">
 				<Map
@@ -275,8 +273,8 @@ class WorldMap extends React.Component {
 				{this.render_date_slider()}
 
 				<div className="row text-center">
-					{["deaths", "infected", "cured"].map(count_type =>
-						this.render_count(count_type)
+					{["deaths", "infected", "cured"].map((count_type, i) =>
+						this.render_count(count_type, i)
 					)}
 				</div>
 			</div>

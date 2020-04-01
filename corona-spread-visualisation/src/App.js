@@ -1,8 +1,8 @@
 import React from "react";
 
-import Header from "./Header";
-import Footer from "./Footer";
-import WorldMap from "./Map";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import WorldMap from "./Components/Map";
 import "./App.css";
 
 class App extends React.Component {

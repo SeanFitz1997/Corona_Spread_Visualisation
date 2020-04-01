@@ -5,7 +5,11 @@ function Footer() {
 		<div className="footer">
 			<small>
 				©2020 Created by{" "}
-				<a href="https://github.com/SeanFitz1997" target="_blank">
+				<a
+					href="https://github.com/SeanFitz1997"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					Seán Fitzpatrick
 				</a>
 			</small>

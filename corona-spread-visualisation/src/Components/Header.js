@@ -79,11 +79,16 @@ function Header(props) {
 								<a
 									href="https://coronavirus.jhu.edu/"
 									target="_blank"
+									rel="noopener noreferrer"
 								>
 									Johns Hopkins University
 								</a>{" "}
 								which can be accessed{" "}
-								<a href="https://github.com/datasets/covid-19" target="_blank">
+								<a
+									href="https://github.com/CSSEGISandData/COVID-19"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									here
 								</a>
 								.
@@ -92,7 +97,9 @@ function Header(props) {
 								The source code for this application can be
 								accessed on my github.
 								<a
-									href="https://github.com/SeanFitz1997/Corona_Spread_Visualisation" target="_blank"
+									href="https://github.com/SeanFitz1997/Corona_Spread_Visualisation"
+									target="_blank"
+									rel="noopener noreferrer"
 									className="float-right"
 								>
 									<i className="fab fa-github-square fa-2x"></i>
