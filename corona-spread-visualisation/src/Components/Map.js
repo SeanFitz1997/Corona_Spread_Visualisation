@@ -15,14 +15,15 @@ class WorldMap extends React.Component {
 		this.state = {
 			corona_data: null,
 			date_index: 0,
+			previous_date_index: 0,
 			plot_type: "infected",
-			playing: false
+			playing: false,
 		};
 	}
 
 	componentDidMount() {
 		//Retrieve corona data
-		CoronaData.build().then(corona_data => {
+		CoronaData.build().then((corona_data) => {
 			console.log("Running", corona_data);
 			// Update state
 			let date_index = corona_data.get_size() - 1;
@@ -43,7 +44,7 @@ class WorldMap extends React.Component {
 			return {
 				infected: 0,
 				deaths: 0,
-				cured: 0
+				cured: 0,
 			};
 	}
 
@@ -52,14 +53,14 @@ class WorldMap extends React.Component {
 		const date_format = new Intl.DateTimeFormat("en", {
 			year: "numeric",
 			month: "short",
-			day: "2-digit"
+			day: "2-digit",
 		});
 		const [
 			{ value: mo },
 			,
 			{ value: da },
 			,
-			{ value: ye }
+			{ value: ye },
 		] = date_format.formatToParts(date);
 
 		return `${da}/${mo}/${ye}`;
@@ -68,8 +69,12 @@ class WorldMap extends React.Component {
 	//*** EVENT HANDLERS ***/
 
 	on_date_change() {
+		let current_date_index = this.state.date_index;
 		let input = document.getElementById("date-slider");
-		this.setState({ date_index: input.value });
+		this.setState({
+			date_index: input.value,
+			previous_date_index: current_date_index,
+		});
 	}
 
 	on_chart_type_change(event) {
@@ -115,28 +120,28 @@ class WorldMap extends React.Component {
 				0.2: "#FFFF66",
 				0.4: "#FFCC00",
 				0.6: "#FF9900",
-				0.8: "#FF0000"
+				0.8: "#FF0000",
 			},
 			deaths: {
 				0.2: "#D2B4DE",
 				0.4: "#A569BD",
 				0.6: "#A569BD",
-				0.8: "#512E5F"
+				0.8: "#512E5F",
 			},
 			cured: {
 				0.2: "#82E0AA",
 				0.4: "#2ECC71",
 				0.6: "#239B56",
-				0.8: "#145A32"
-			}
+				0.8: "#145A32",
+			},
 		};
 		if (corona_data)
 			return (
 				<HeatmapLayer
 					points={corona_data.get_data(date_index, plot_type).data}
-					longitudeExtractor={point => point.location.longitude}
-					latitudeExtractor={point => point.location.latitude}
-					intensityExtractor={point => point.count}
+					longitudeExtractor={(point) => point.location.longitude}
+					latitudeExtractor={(point) => point.location.latitude}
+					intensityExtractor={(point) => point.count}
 					gradient={gradients[plot_type]}
 				/>
 			);
@@ -198,12 +203,19 @@ class WorldMap extends React.Component {
 	}
 
 	render_count(count_type, i) {
-		let { plot_type, date_index, corona_data } = this.state;
+		let {
+			plot_type,
+			date_index,
+			previous_date_index,
+			corona_data,
+		} = this.state;
 		const icons_class = {
 			deaths: "fas fa-skull-crossbones",
 			infected: "fas fa-biohazard",
-			cured: "fas fa-medkit"
+			cured: "fas fa-medkit",
 		};
+		let totals = this.get_totals(date_index, corona_data);
+		let previous_totals = this.get_totals(previous_date_index, corona_data);
 
 		return (
 			<div
@@ -216,7 +228,8 @@ class WorldMap extends React.Component {
 			>
 				<i className={`${icons_class[count_type]} count-icon`}></i>
 				<CountUp
-					end={this.get_totals(date_index, corona_data)[count_type]}
+					start={previous_totals[count_type]}
+					end={totals[count_type]}
 					separator=","
 					delay={0}
 					duration={0.7}
@@ -241,8 +254,8 @@ class WorldMap extends React.Component {
 			minZoom: isMobile ? 0.75 : 2,
 			maxBounds: [
 				[-100, -200],
-				[100, 200]
-			]
+				[100, 200],
+			],
 		};
 		return (
 			<div className="map">
