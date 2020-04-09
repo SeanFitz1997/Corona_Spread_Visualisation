@@ -99,7 +99,10 @@ class WorldMap extends React.Component {
 			let { date_index, corona_data } = this.state;
 			// Increment date or stop play at end
 			if (date_index < corona_data.get_size() - 1)
-				this.setState({ date_index: ++date_index });
+				this.setState({
+					previous_date_index: date_index,
+					date_index: ++date_index,
+				});
 			else this.stop_play();
 		}, 1000);
 	}
