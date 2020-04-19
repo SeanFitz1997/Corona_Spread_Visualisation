@@ -8,7 +8,7 @@ import "./App.css";
 
 class App extends React.Component {
 	componentDidMount() {
-		ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
+		ReactGA.initialize("UA-163912865-1");
 		ReactGA.pageview("/");
 	}
 
