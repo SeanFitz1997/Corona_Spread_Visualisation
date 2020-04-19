@@ -24,7 +24,6 @@ class WorldMap extends React.Component {
 	componentDidMount() {
 		//Retrieve corona data
 		CoronaData.build().then((corona_data) => {
-			console.log("Running", corona_data);
 			// Update state
 			let date_index = corona_data.get_size() - 1;
 			this.setState({ corona_data, date_index });
